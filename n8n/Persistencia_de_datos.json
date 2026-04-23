@@ -1,0 +1,156 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1_nJccfVY2cfeAUWP9_gytBIieWRpSP3waDloxSBVYbM",
+            "mode": "list",
+            "cachedResultName": "Persistencia de datos",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_nJccfVY2cfeAUWP9_gytBIieWRpSP3waDloxSBVYbM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Hoja 1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_nJccfVY2cfeAUWP9_gytBIieWRpSP3waDloxSBVYbM/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "usuario": "={{ $('Formulario películas').item.json.Usuario }}",
+              "descripción": "={{ $json.description }}",
+              "pelicula encontrada": "={{ $json.title }}"
+            },
+            "matchingColumns": [
+              "usuario"
+            ],
+            "schema": [
+              {
+                "id": "usuario",
+                "displayName": "usuario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "pelicula encontrada",
+                "displayName": "pelicula encontrada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "descripción",
+                "displayName": "descripción",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -16,
+          624
+        ],
+        "id": "8697097b-47d0-4709-a78d-7a8aa7180999",
+        "name": "Append or update row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "pOTLqPNuZ6A9CYzK",
+            "name": "Google Sheets OAuth2 API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "formTitle": "Buscar película",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "Usuario",
+                "placeholder": "Ingrese su nombre de usuario",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "Numero (del 1 al 20 por favor =) )",
+                "placeholder": "Ingrese un numero y se buscará la pelicula con ese numero como id",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.5,
+        "position": [
+          -448,
+          624
+        ],
+        "id": "035ecbe6-7493-4d59-8136-0734666ce8f8",
+        "name": "Formulario películas",
+        "webhookId": "7db4730a-cae9-4069-85fd-2f548281077b"
+      },
+      {
+        "parameters": {
+          "url": "=https://devsapihub.com/api-movies/{{ $json['Numero (del 1 al 20 por favor =) )'] }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          -224,
+          624
+        ],
+        "id": "1ee17160-d57a-4252-b227-bee22bbbf81a",
+        "name": "HTTP Request (películas)",
+        "alwaysOutputData": false
+      }
+    ],
+    "connections": {
+      "Formulario películas": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request (películas)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request (películas)": {
+        "main": [
+          [
+            {
+              "node": "Append or update row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+    }
+  }

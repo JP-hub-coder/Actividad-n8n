@@ -1,0 +1,239 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "formTitle": "Personajes Rick y Morty",
+          "formDescription": "Ingrese un id para buscar una comida rápida\n(Los id's van del 1 al 59)",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "ID",
+                "fieldType": "number",
+                "placeholder": "Ingrese el id a buscar",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "Límite",
+                "fieldType": "number",
+                "placeholder": "Límite de precio, Ej. 40, 35.9",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.5,
+        "position": [
+          -624,
+          2144
+        ],
+        "id": "f835edeb-756c-49aa-a62c-b360a5d42263",
+        "name": "formulario comida rapida (decisiones automatizadas)",
+        "webhookId": "18b698b5-6a3f-4f49-a37b-07f67055fb39"
+      },
+      {
+        "parameters": {
+          "url": "=https://devsapihub.com/api-fast-food/{{ $json.ID }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          -208,
+          2240
+        ],
+        "id": "8093e7c5-1789-40a3-ae67-df2693f263b7",
+        "name": "HTTP Request (api Rick y Morty)3",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          208,
+          2336
+        ],
+        "id": "7dc2365d-c8c1-42f0-87a0-87a598079149",
+        "name": "No Operation, do nothing2"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "647f20fc-ad22-45f9-8fb4-69a2f2bfd294",
+                "name": "Error",
+                "value": "El id ingresado no fue encontrado\nel límite para buscar comida es de 59\nintente nuevamente",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -224,
+          2080
+        ],
+        "id": "4235e486-a16a-4261-a50c-550abc4a6e04",
+        "name": "Añadir mensaje de error por numero"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "1fe99d7f-ed40-4de8-9f8e-9f9f49e504bd",
+                "name": "No se puede",
+                "value": "Error, el producto encontrado supera el límite establecido, buen dia",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          208,
+          2144
+        ],
+        "id": "288f407b-2d35-4768-812f-51bf870d7ecf",
+        "name": "Error por superar el limite establecido"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "51a3a810-29d2-4aa4-b268-9eb8587575ab",
+                "leftValue": "={{ $json.ID }}",
+                "rightValue": 59,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -432,
+          2144
+        ],
+        "id": "75980edc-793f-4220-b72f-65b9adac2840",
+        "name": "revisar que el id recibido si esté dentro del rango"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "7c9dc89a-2d8b-4c8c-984e-d07e81f2980a",
+                "leftValue": "={{ $json.price }}",
+                "rightValue": "={{ $('formulario comida rapida (decisiones automatizadas)').item.json['Límite'] }}",
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          0,
+          2240
+        ],
+        "id": "1ac4d465-03ae-4ba7-aec5-884beff295cf",
+        "name": "verificar que el precio no sobrepase el límite establecido"
+      }
+    ],
+    "connections": {
+      "formulario comida rapida (decisiones automatizadas)": {
+        "main": [
+          [
+            {
+              "node": "revisar que el id recibido si esté dentro del rango",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request (api Rick y Morty)3": {
+        "main": [
+          [
+            {
+              "node": "verificar que el precio no sobrepase el límite establecido",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "revisar que el id recibido si esté dentro del rango": {
+        "main": [
+          [
+            {
+              "node": "Añadir mensaje de error por numero",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "HTTP Request (api Rick y Morty)3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "verificar que el precio no sobrepase el límite establecido": {
+        "main": [
+          [
+            {
+              "node": "Error por superar el limite establecido",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+    }
+  }
