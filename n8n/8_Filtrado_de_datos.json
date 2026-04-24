@@ -1,0 +1,92 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -544,
+          1488
+        ],
+        "id": "995b6b5c-4eee-447e-88b9-c33f8b860ba0",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "a4447643-3d0c-4e72-a5f5-25068d228f9c",
+                "leftValue": "={{ $json.genre }}",
+                "rightValue": "Action",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.3,
+        "position": [
+          -112,
+          1488
+        ],
+        "id": "54e6acfb-3640-49c8-968e-105dfe741d2f",
+        "name": "Filter (en esta caso filtra solo los de género \"Action\")"
+      },
+      {
+        "parameters": {
+          "url": "=https://devsapihub.com/api-movies",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          -336,
+          1488
+        ],
+        "id": "5fc4f90b-709d-403b-adee-e6f55d6731c3",
+        "name": "HTTP Request (Películas, para filtro)",
+        "alwaysOutputData": false
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request (Películas, para filtro)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request (Películas, para filtro)": {
+        "main": [
+          [
+            {
+              "node": "Filter (en esta caso filtra solo los de género \"Action\")",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+    }
+  }

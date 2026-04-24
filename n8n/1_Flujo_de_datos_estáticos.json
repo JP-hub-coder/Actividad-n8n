@@ -1,0 +1,114 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -304
+      ],
+      "id": "995b6b5c-4eee-447e-88b9-c33f8b860ba0",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -304
+      ],
+      "id": "7237bb0a-568e-4dca-a7ac-1dfff0cddf9d",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "60eaf1f1-37f7-4e66-aa4b-c398669b946f",
+              "name": "nombre(s)",
+              "value": "=Juan Pablo ",
+              "type": "string"
+            },
+            {
+              "id": "abb1b69f-bb50-4918-a0b5-618eba605496",
+              "name": "apellidos",
+              "value": "=Beltran Jimenez",
+              "type": "string"
+            },
+            {
+              "id": "d54042e3-f1cc-4c90-872a-68cbd5d73d96",
+              "name": "fecha de nacimiento ",
+              "value": "=18/05/2009",
+              "type": "string"
+            },
+            {
+              "id": "3fcaa20f-1a19-4ef6-ad9f-2bc601ef8780",
+              "name": "documento",
+              "value": "=1101204140",
+              "type": "number"
+            },
+            {
+              "id": "945e2a95-3a5b-4f37-b3aa-b21608ab7006",
+              "name": "ciudad de residencia",
+              "value": "=Bucaramanga",
+              "type": "string"
+            },
+            {
+              "id": "7f24646a-f3e3-4ac2-9921-f8eb793d986a",
+              "name": "barrio",
+              "value": "=Lagos I",
+              "type": "string"
+            },
+            {
+              "id": "7a84b779-fb24-4b26-bffe-39830563037d",
+              "name": "dirección",
+              "value": "=Dg 36 # 34-147",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -208,
+        -304
+      ],
+      "id": "ff0efc1c-7d23-4bc9-b5f9-b35c29bed8fb",
+      "name": "Datos estáticos"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Datos estáticos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Datos estáticos": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+  }
+}

@@ -1,0 +1,181 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "51a3a810-29d2-4aa4-b268-9eb8587575ab",
+                "leftValue": "={{ $('formulario api Rick y Morty(errores)').item.json.ID }}",
+                "rightValue": 826,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -416,
+          1792
+        ],
+        "id": "283d2742-5513-48ab-aed4-f89f98f28252",
+        "name": "If"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          -16,
+          1728
+        ],
+        "id": "45710198-3afd-40c9-8ee6-1781ba8ec040",
+        "name": "No Operation, do nothing (resultado de error)"
+      },
+      {
+        "parameters": {
+          "url": "=https://rickandmortyapi.com/api/character/{{ $json.ID }}\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          -208,
+          1872
+        ],
+        "id": "c3f6ca33-2676-45e1-8fcf-01f9a5f0e18c",
+        "name": "HTTP Request (api Rick y Morty)2",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          -16,
+          1872
+        ],
+        "id": "e05261b7-538c-4ce4-a856-e6e3e25e824b",
+        "name": "No Operation, do nothing(mostrar resultado correcto)"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "647f20fc-ad22-45f9-8fb4-69a2f2bfd294",
+                "name": "Error",
+                "value": "El id ingresado no fue encontrado\nel límite para buscar personajes es de 826 \nintente nuevamente",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -208,
+          1728
+        ],
+        "id": "bf0c05e3-a121-413c-a142-1552742c6de4",
+        "name": "Añadir mensaje de error"
+      },
+      {
+        "parameters": {
+          "formTitle": "Personajes Rick y Morty",
+          "formDescription": "Ingrese un id para buscar un personaje dentro de la serie Rick y Morty\n(Los id's van del 1 al 20)",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "ID",
+                "fieldType": "number",
+                "placeholder": "Ingrese el id a buscar",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.5,
+        "position": [
+          -608,
+          1792
+        ],
+        "id": "680f1bef-e63d-4794-af2c-7c1df8143676",
+        "name": "formulario api Rick y Morty(errores)",
+        "webhookId": "0104a56a-2a4e-4f22-a052-d604554e41dc"
+      }
+    ],
+    "connections": {
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Añadir mensaje de error",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "HTTP Request (api Rick y Morty)2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request (api Rick y Morty)2": {
+        "main": [
+          [
+            {
+              "node": "No Operation, do nothing(mostrar resultado correcto)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Añadir mensaje de error": {
+        "main": [
+          [
+            {
+              "node": "No Operation, do nothing (resultado de error)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "formulario api Rick y Morty(errores)": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+    }
+  }
