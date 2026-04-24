@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        256
+      ],
+      "id": "995b6b5c-4eee-447e-88b9-c33f8b860ba0",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://api.chucknorris.io/jokes/random",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -208,
+        256
+      ],
+      "id": "864cc1c9-96be-4b4d-aade-5a3fd3dfbb65",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "495612b8-c197-434a-ad4d-54889396d323",
+              "name": "Chiste (Pero en mayúscula)",
+              "value": "={{ $json.value.toUpperCase() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        256
+      ],
+      "id": "063d9e11-7c80-4c4e-9624-d5f98126d28f",
+      "name": "Chistes api(pero en mayúscula =) )"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Chistes api(pero en mayúscula =) )",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+  }
+}

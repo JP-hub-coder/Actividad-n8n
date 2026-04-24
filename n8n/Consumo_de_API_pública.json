@@ -1,0 +1,103 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        0
+      ],
+      "id": "995b6b5c-4eee-447e-88b9-c33f8b860ba0",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "307d11ca-2d68-42cb-a338-e8623883046e",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f94f04b-d2ad-44f0-9fec-076ee02b3d33",
+              "name": "chiste",
+              "value": "={{ $json.value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "eab463f0-048f-420f-b714-20491900021b",
+      "name": "Chistes api"
+    },
+    {
+      "parameters": {
+        "url": "https://api.chucknorris.io/jokes/random",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "3f9cb512-b863-49f1-8b52-2ef46d46a21b",
+      "name": "HTTP Request(traer chistes)"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request(traer chistes)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chistes api": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request(traer chistes)": {
+      "main": [
+        [
+          {
+            "node": "Chistes api",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+  }
+}

@@ -1,0 +1,124 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -656,
+          2768
+        ],
+        "id": "995b6b5c-4eee-447e-88b9-c33f8b860ba0",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "id"
+          },
+          "responses": {
+            "values": [
+              {
+                "content": "=Analiza el sentimiento del siguiente texto y responde SOLO con una palabra: positivo, negativo o neutral.\n\nClasifica el siguiente texto en una categoría (soporte, queja, consulta u otro). Responde solo con una palabra.\n\n\nTexto:\n{{$json.body}}\n\ny organizalo tipo: \nsentimiento: el sentimiento que encontraste\ncategoría: la categoría que encontraste"
+              }
+            ]
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 2.1,
+        "position": [
+          -320,
+          2768
+        ],
+        "id": "bd2e08d0-b09c-4d9f-90d8-3f5882ce6d45",
+        "name": "Message a model1",
+        "credentials": {
+          "openAiApi": {
+            "id": "Uuu5FuCKNHq1MkkS",
+            "name": "n8n free OpenAI API credits"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "fb18e614-59c5-4094-8e95-22ff70037a2f",
+                "name": "Respuesta",
+                "value": "={{ $json.output[0].content[0].text }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          0,
+          2768
+        ],
+        "id": "276c6461-691d-428b-bcb2-9a2551400404",
+        "name": "pasar respuesta solamente1"
+      },
+      {
+        "parameters": {
+          "url": "https://jsonplaceholder.typicode.com/comments/1",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          -480,
+          2768
+        ],
+        "id": "3ed5d64e-0345-4529-a5f9-a04c9e11d6e8",
+        "name": "HTTP Request(clasificación por ia)"
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request(clasificación por ia)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Message a model1": {
+        "main": [
+          [
+            {
+              "node": "pasar respuesta solamente1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request(clasificación por ia)": {
+        "main": [
+          [
+            {
+              "node": "Message a model1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+    }
+  }

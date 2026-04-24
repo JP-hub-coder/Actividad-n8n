@@ -1,0 +1,124 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -640,
+          2544
+        ],
+        "id": "995b6b5c-4eee-447e-88b9-c33f8b860ba0",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "id"
+          },
+          "responses": {
+            "values": [
+              {
+                "content": "=dame un resumen de este articulo en español:\npuntos principales:\n{{ $json.articles[0].author }}\n{{ $json.articles[0].title }}\n{{ $json.articles[0].description }}\n{{ $json.articles[0].content }}\n"
+              }
+            ]
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 2.1,
+        "position": [
+          -240,
+          2544
+        ],
+        "id": "0ac97838-3ea9-4bec-bf86-4cbb948c0192",
+        "name": "Message a model",
+        "credentials": {
+          "openAiApi": {
+            "id": "Uuu5FuCKNHq1MkkS",
+            "name": "n8n free OpenAI API credits"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://newsapi.org/v2/everything?q=tesla&from=2026-03-24&sortBy=publishedAt&apiKey=53b6db1afdf544af9690ecbb40faa177",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          -432,
+          2544
+        ],
+        "id": "03d5b9c0-54be-439b-8396-309594a4bf01",
+        "name": "HTTP Request(api + ia)"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "fb18e614-59c5-4094-8e95-22ff70037a2f",
+                "name": "Respuesta",
+                "value": "={{ $json.output[0].content[0].text }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          64,
+          2544
+        ],
+        "id": "fc67b2ab-238c-47d2-a958-b18ed7961788",
+        "name": "pasar respuesta solamente"
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request(api + ia)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Message a model": {
+        "main": [
+          [
+            {
+              "node": "pasar respuesta solamente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request(api + ia)": {
+        "main": [
+          [
+            {
+              "node": "Message a model",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "0e8740314be883c697d550def86aebf458563700b936ddf7d3375efcb672f7dd"
+    }
+  }
